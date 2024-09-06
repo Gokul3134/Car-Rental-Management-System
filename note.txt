@@ -1,0 +1,1430 @@
+<?php if (isset($_GET['success']) && $_GET['success'] == 1): ?>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Registration Successful!',
+                        html: 'Your Registration ID is: <?php echo htmlspecialchars($_GET['customer_id'], ENT_QUOTES); ?><br><br>' +
+                            '<a href="catalog_car.php?customer_id=<?php echo htmlspecialchars($_GET['customer_id'], ENT_QUOTES); ?>" class="btn btn-primary">Click Here<br>For Booking</a>',
+                        showConfirmButton: true
+                    });
+                });
+            </script>
+        <?php endif; ?>
+
+
+
+
+
+<section id="partners" class="clients-section text-center">
+        <h2>Our Partners</h2>
+        <!-- <hr class="new2"> -->
+        <div class="clients-container">
+            <div class="clients-list">
+                <img src="img/ibm2.png" alt="Client 1">
+                <img src="img/google.png" alt="Client 2">
+                <img src="img/microsoft.png" alt="Client 3">
+                <img src="img/amazon.png" alt="Client 4">
+                
+            </div>
+            <br>
+            <div class="clients-list">
+                
+                <img src="img/hcl.png" alt="Client 5" style="width: 330px;height: 400px">
+                <img src="img/tcs.png" alt="Client 6">
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+.clients-section {
+    padding-top: 200px;
+    /* padding: 80px 0; */
+    font-family: Arial, sans-serif;
+    padding-bottom: 100px;
+    /* background: rgb(2, 0, 36);
+    background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(172, 212, 231, 1) 0%, rgba(242, 245, 255, 1) 62%);
+     */
+}
+
+.clients-container {
+    /* overflow-x: scroll;
+    white-space: nowrap; */
+    padding: 50px;
+}
+
+.clients-list {
+    display: inline-flex;
+    gap: 50px;
+    box-sizing: border-box;
+}
+
+.clients-list img {
+    max-height: 120px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+<?php
+session_start();
+
+// Check if the user is logged in and if session data is set
+if (!isset($_SESSION["user"]) || !is_array($_SESSION["user"])) {
+    header("Location: login.php");
+    exit();
+}
+
+// Fetch user ID from session
+$user_id = $_SESSION["user"]["id"];
+
+// Database connection
+require_once "db.php";
+
+// Prepare and execute the query to fetch customer data
+$sql = "SELECT * FROM customers WHERE id = ?";
+$stmt = mysqli_stmt_init($conn);
+if (!mysqli_stmt_prepare($stmt, $sql)) {
+    die("SQL error");
+}
+mysqli_stmt_bind_param($stmt, "i", $user_id);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
+$customer = mysqli_fetch_assoc($result);
+
+// Check if customer data was retrieved
+if (!$customer) {
+    die("Customer not found");
+}
+
+// Close the database connection
+mysqli_close($conn);
+?>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Rental Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+/* Basic styles for dropdown */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropbtn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1;}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: #3e8e41;
+}
+
+/* Responsive navbar styles */
+.icon {
+  display: none;
+}
+
+@media screen and (max-width: 600px) {
+  .icon {
+    display: block;
+  }
+  
+  .topnav.responsive {position: relative;}
+  .topnav.responsive .icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  
+  .topnav.responsive .dropdown {float: none;}
+  .topnav.responsive .dropdown-content {position: relative;}
+  .topnav.responsive .dropdown .dropbtn {
+    display: block;
+  }
+}
+</style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="nav-left">
+                <img src="img/logo.jpg" alt="Logo" style="width: 80px; height: 60px;border-radius:35px;margin-left:50px">
+            </div>
+            <div class="nav-center">
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#service">Our Services</a></li>
+                    <li><a href="#contact">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="nav-right">
+            <div class="profile">
+    <img src="https://as2.ftcdn.net/v2/jpg/02/10/70/13/1000_F_210701394_juARL2AoYEzgYZWI5zHmcGXmqWwQS8L2.jpg" alt="profile_picture" />
+    <h3><?php echo htmlspecialchars($customer['name']); ?></h3>
+
+    <!-- Dropdown Menu -->
+    <div class="dropdown">
+        <button class="dropbtn">
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+            <a href="#">Profile</a>
+            <a href="#">Settings</a>
+            <a href="#">Logout</a>
+        </div>
+    </div>
+
+    <!-- Hamburger Icon for Responsive Navbar -->
+    <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
+</div>
+                <ul>
+                    <!-- <li><a href="login.php" id="loginBtn">Login / Register</a></li> -->
+                    <!-- <button onclick=window.parent.location.href='login.php'>Login</button> -->
+                    <li><a href="logout.php"><i class="fas fa-user"></i> Logout</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <section id="home">
+        <div class="hero-banner">
+            <div class="slides">
+                <img src="img/web_banner.jpg" alt="Hero Banner 2">
+                <div class="hero-text">
+                    <h1>Welcome to Our Self-Drive Car Rental System</h1>
+                    <!-- <a href="registation.php" class="btn btn-primary">Click Here<br> For Registation</a> -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <div class="about-section">
+            <div class="about-image">
+                <img src="img/about.jpeg" alt="About Us" style="width: 43rem;height: 25rem">
+            </div>
+            <div class="about-text">
+                <h1>About Us</h1>
+                <!-- <hr class="new1"> -->
+                <p>
+                    Welcome to our Car Rental Service. We offer a wide range of cars to suit your needs. <br>At GS Car Rental, we turn journeys into memories. Since 2020, we've been your trusted car rental partner, offering a diverse fleet – from city-friendly compacts to adventure-ready SUVs and luxurious sedans. Book your car online in minutes and choose from convenient locations for a hassle-free experience. We prioritize affordability with transparent pricing and competitive rates. But it's not just about the car. Our friendly team is available 24/7 to ensure a smooth ride, and meticulous maintenance and roadside assistance keep you safe on every mile. We're passionate about exploration, empowering you with the freedom of the open road. Weekend escapes, business trips, or family adventures – we're here to get you there comfortably. Visit our website today to browse our cars and embark on your next adventure with confidence.
+                </p>
+            </div>
+        </div>
+
+    </section>
+
+    <section id="service" class="servic">
+        <h2>Our Services</h2>
+        <!-- <hr class="new2"> -->
+        <div class="container">
+            
+            <div class="card">
+                <img src="img/pic6.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Rent Car</h5>
+                    <p class="card-text">Renting a car on our website is simple and convenient. Browse our extensive fleet, choose the vehicle that suits your needs, and book online in minutes. Enjoy transparent pricing, easy booking, and prompt service for a hassle-free rental experience.</p>
+                    <a href="catalog_car.php" class="btn btn-primary">Click Here</a>
+                </div>
+            </div>
+            <div class="card">
+                <img src="img/gps.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">GPS Navigation Systems</h5>
+                    <p class="card-text">GPS navigation systems in car rentals offer real-time directions, traffic updates, and safety features, enhancing customer convenience. They also enable fleet tracking, theft recovery, and improved operational efficiency for rental companies.</p>
+                    <a href="navigation.php" class="btn btn-primary">Click Here</a>
+                </div>
+            </div>
+            <div class="card">
+                <img src="img/pic4.png" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">24/7 Customer Support</h5>
+                    <p class="card-text">24/7 customer support in a car rental system offers round-the-clock assistance for booking issues, roadside emergencies, and general inquiries. This ensures timely help and a seamless rental experience, enhancing customer satisfaction and reliability.</p>
+                    <a href="customer_support.php" class="btn btn-primary">Click Here</a>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+
+    
+
+    <section id="contact" class="conta">
+        <h2>Contact Us</h2>
+        <!-- <hr class="new3"> -->
+        <div class="form">
+            <form id="contactForm" action="contact.php" method="POST">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+                <label for="phone">Phone:</label>
+                <input type="text" id="phone" name="phone" required>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" required></textarea>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="row">
+            <div class="address">
+                <h3>Office Address:</h3>
+                <hr>
+                <h5>Main Office:</h5>
+                <p>ANO 717, Astra Towers, Action Area IIC, <br>Newtown, New Town, West Bengal 700135</p>
+                <h5>Tech Office:</h5>
+                <p>Unit no: EKT_GR_1B, Premises no. 04-702, <br>Plot no.- IID, Ek Tower 30, Ek Tower, <br>Action Area II, Action Area IID, Newtown, <br>Kolkata, New Town, West Bengal 700161</p>
+            </div>
+            <div class="contact_info">
+                <h3>Contact Info:</h3>
+                <hr>
+                <h5>Call Us:</h5>
+                <p>+91 9648571234</p>
+                <p>+91 9875642317</p>
+                <h5>E-mail Us:</h5>
+                <p>rentcar@gmail.com</p>
+                <p>carrent@gmail.com</p>
+            </div>
+            <div class="follow">
+                <h3>Follow Us:</h3>
+                <hr>
+                <a href="#" class="fa fa-facebook"></a>
+                <a href="#" class="fa fa-twitter"></a>
+                <a href="#" class="fa fa-linkedin"></a>
+                <a href="#" class="fa fa-youtube"></a>
+                <a href="#" class="fa fa-instagram"></a>
+            </div>
+            <div class="map">
+                <h3>Our Office Location</h3>
+                <hr>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1094.923259271096!2d88.46469283000823!3d22.621397370167617!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f89f308e3e063d%3A0x4cb8ec196b283f75!2sAstra%20Tower!5e0!3m2!1sen!2sin!4v1722242783399!5m2!1sen!2sin" width="500" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            
+        </div>
+        <!-- <p>Copyright © all writes are reserved</p> -->
+        <p>© GS Car Rentel, 2024. All Rights Reserved.</p>
+        
+    </footer>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Perform form validation and submission using AJAX (if needed)
+            var form = event.target;
+            var formData = new FormData(form);
+
+            // Example AJAX request (replace with your actual AJAX call)
+            fetch(form.action, {
+                method: form.method,
+                body: formData
+            }).then(response => response.json())
+            .then(data => {
+                // Assuming the server returns a success message in JSON format
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Your message has been sent successfully!',
+                    });
+                    form.reset(); // Reset the form after successful submission
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'There was an error sending your message. Please try again later.',
+                    });
+                }
+            }).catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'There was an error sending your message. Please try again later.',
+                });
+            });
+        });
+    </script>
+
+    <script>
+        function bookCar(carId) {
+            window.location.href = `car_details.php?id=${carId}`;
+        }
+    </script>
+
+<script>
+function myFunction() {
+  var x = document.getElementById("myTopnav");
+  if (x.className === "topnav") {
+    x.className += " responsive";
+  } else {
+    x.className = "topnav";
+  }
+}
+</script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+This is Review Section code for Front Page...
+
+///////////////////////////////////////////////
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Rental Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <style>
+        body {
+            background-image: radial-gradient(circle, rgb(212, 148, 244), rgb(110, 217, 228), rgb(85, 138, 252));
+        }
+
+        header {
+            background-color: rgb(212, 223, 233);
+        }
+
+        .nav-left {
+            padding: 3px 0;
+        }
+
+        nav ul li a {
+            color: rgb(0, 0, 0);
+        }
+
+        nav ul li a:hover {
+            border-bottom: 2px solid rgb(0, 0, 0);
+        }
+
+        .hero-text {
+            text-align: center;
+            position: absolute;
+            bottom: 10px;
+            left: 26%;
+            padding: 10px;
+            color: white;
+            background-color: rgb(255, 255, 255, 0.001);
+        }
+
+        .about-image img {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 100%;
+            height: auto;
+            border-radius: 50%;
+        }
+
+        .about-text {
+            background-color: rgb(255, 255, 255, 0.001);
+            flex: 2;
+            max-width: 70%;
+            border-radius: 8px;
+        }
+
+        .about-text p {
+            font-family: sans-serif;
+            font-size: 19px;
+            font-weight: 500;
+            line-height: 1.5;
+            text-align: justify;
+            max-width: 85%;
+            margin-left: 50px;
+        }
+
+        .about-text h1 {
+            text-align: left;
+            margin-left: 55px;
+        }
+
+        .servic h2 {
+            color: black;
+            font-family: sans-serif;
+        }
+
+        .review {
+            padding: 2rem 0;
+            background-color: #f8f9fa;
+        }
+
+        .review .heading {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .review .heading span {
+            color: #6c757d;
+        }
+
+        .review-slider {
+            padding: 1rem;
+        }
+
+        .review-slider .swiper-slide {
+            background: #fff;
+            border-radius: .5rem;
+            text-align: center;
+            padding: 3rem 2rem;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.2s ease;
+        }
+
+        .review-slider .swiper-slide:hover {
+            box-shadow: 1px 1px 10px 4px rgba(0, 123, 255, 0.2);
+        }
+
+        .review-slider .swiper-slide img {
+            height: 10rem;
+            width: 10rem;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+        }
+
+        .review-slider .swiper-slide p {
+            padding: 1rem 0;
+            line-height: 1.8;
+            color: #6c757d;
+            font-size: 1.5rem;
+        }
+
+        .review-slider .swiper-slide h3 {
+            padding-bottom: .5rem;
+            color: #343a40;
+            font-size: 2.2rem;
+        }
+
+        .review-slider .swiper-slide .stars {
+            color: orange;
+            font-size: 1.7rem;
+        }
+
+        footer {
+            background-color: rgb(212, 223, 233);
+            color: #333;
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid #dee2e6;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 14px;
+            font-family: sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Existing HTML sections -->
+
+    <section class="review">
+        <div class="container">
+            <div class="heading">
+                <h2>User <span>Reviews</span></h2>
+            </div>
+            <div class="review-slider swiper">
+                <div class="swiper-wrapper">
+
+                    <div class="swiper-slide">
+                        <div>
+                            <img src="img/user1.jpg" alt="User 1">
+                            <h3>John Doe</h3>
+                            <p>
+                                "Excellent service and a great car selection. I was very pleased with my rental experience."
+                            </p>
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <div>
+                            <img src="img/user2.jpg" alt="User 2">
+                            <h3>Jane Smith</h3>
+                            <p>
+                                "The process was smooth, and the car was in excellent condition. Highly recommend!"
+                            </p>
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <div>
+                            <img src="img/user3.jpg" alt="User 3">
+                            <h3>Michael Brown</h3>
+                            <p>
+                                "Affordable rates and friendly staff. Will definitely rent again for my next trip."
+                            </p>
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Add more reviews as needed -->
+
+                </div>
+                <!-- Add Pagination -->
+                <div class="swiper-pagination"></div>
+                <!-- Add Navigation -->
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Existing Footer -->
+
+    <footer>
+        <p>&copy; 2024 Car Rental Management System. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script>
+        var swiper = new Swiper('.swiper', {
+            slidesPerView: 1,
+            spaceBetween: 30,
+            loop: true,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        });
+    </script>
+</body>
+</html>
+
+
+/////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+    <div class="help" style="margin-top:120px">
+            
+            <div class="card" style="width: 20rem; height: 25rem;margin-top:20px">
+                <img src="img/expart1.jpg" class="card-img-top" alt="..." style="width: 18rem;height: 15rem;margin-top:5px">
+                <div class="card-body">
+                    <h5 class="card-title">For Booking Related Issue </h5>
+                    <p class="card-text"><b>Call Us:</b> +91 9800123524 </p>
+                    <p class="card-text"><b>E-mail Us:</b> cust_support@gmail.com </p>
+                    <!-- <a href="catalog_car.php" class="btn btn-primary">Click Here</a> -->
+                </div>
+            </div>
+            <div class="card" style="width: 20rem; height: 25rem;margin-top:20px">
+                <img src="img/expart2.jpg" class="card-img-top" alt="..." style="width: 18rem;height: 15rem;margin-top:5px">
+                <div class="card-body">
+                    <h5 class="card-title">For Car Related Issue </h5>
+                    <p class="card-text"><b>Call Us:</b> +91 9800854675 </p>
+                    <p class="card-text"><b>E-mail Us:</b> car_support@gmail.com </p>
+                    <!-- <a href="catalog_car.php" class="btn btn-primary">Click Here</a> -->
+                </div>
+            </div>
+            <div class="card" style="width: 20rem; height: 25rem;margin-top:20px">
+                <img src="img/expart3.jpg" class="card-img-top" alt="..." style="width: 18rem;height: 15rem;margin-top:5px">
+                <div class="card-body">
+                    <h5 class="card-title">For Rent Related Quary</h5>
+                    <p class="card-text"><b>Call Us:</b> +91 9800124357 </p>
+                    <p class="card-text"><b>E-mail Us:</b> quary@gmail.com </p>
+                    <!-- <a href="customer_support.php" class="btn btn-primary">Click Here</a> -->
+                </div>
+            </div>
+            
+    </div>
+    <!-- <div class="help" style="padding-top:20px; margin-top:115px; margin-bottom:5px">
+        <div class="help1">
+            <h1>Availability</h1>
+            <p><b>Round-the-Clock Support:</b> Customer support is available 24 hours a day, 7 days a week, including holidays and weekends.</p>
+            <p><b>Immediate Assistance:</b> Provides immediate responses to customer inquiries and issues, reducing wait times and improving customer satisfaction.</p>
+        </div>
+        <div class="help1">
+            <h1>Channels of Communication</h1>
+            <p><b>Live Chat:</b> Instant messaging with support agents via a live chat widget on the website.</p>
+            <p><b>Phone Support:</b> Toll-free or local phone numbers for customers to call for immediate assistance.</p>
+            <p>Email Support: Dedicated email addresses for support inquiries, with a commitment to respond within a specified time frame.</p>
+            <p>Social Media: Active support through social media platforms such as Facebook, Twitter, and Instagram.</p>
+            <p>Support Tickets: A ticketing system for tracking and resolving customer issues efficiently.</p>
+        </div>
+        <div class="help1">
+            <h1>Support Services Offered</h1>
+            <p>Booking Assistance: Help with making, modifying, or canceling reservations.</p>
+            <p>Technical Support: Assistance with navigating the website, resolving technical issues, and troubleshooting problems.</p>
+            <p>Information and Guidance: Providing information about rental policies, vehicle details, insurance options, and more.</p>
+            <p>Emergency Support: Immediate help in case of accidents, breakdowns, or other emergencies involving rental vehicles.</p>
+            <p>Feedback and Complaints: Receiving and addressing customer feedback, complaints, and suggestions for service improvement.</p>
+        </div>
+        <div class="help1">
+            <h1>Technology and Tools</h1>
+            <p>AI Chatbots: Automated chatbots to handle simple inquiries and provide basic information when human agents are unavailable.</p>
+            <p>CRM Systems: Customer Relationship Management systems to manage customer interactions and data efficiently.</p>
+            <p>Knowledge Base: An online repository of FAQs, how-to guides, and other helpful resources for self-service support.</p>
+            <p>Multi-Language Support: Offering support in multiple languages to cater to a diverse customer base.</p>
+        </div>
+        <div class="help1">
+            <h1>Staff Training and Expertise</h1>
+            <p>Trained Agents: Customer support agents are well-trained in company policies, procedures, and vehicle details to provide accurate and helpful information.</p>
+            <p>Continuous Training: Ongoing training programs to keep support staff updated on new services, technologies, and best practices.</p>
+            <p>Empathy and Communication Skills: Agents are trained to handle customer inquiries with empathy, patience, and effective communication.</p>
+        </div>
+        <div class="help1">
+            <h1>Performance Metrics</h1>
+            <p>Response Time: Tracking the time it takes to respond to customer inquiries across different channels.</p>
+            <p>Resolution Time: Measuring the time required to resolve customer issues completely.</p>
+            <p>Customer Satisfaction: Collecting feedback through surveys and other methods to gauge customer satisfaction with the support provided.</p>
+            <p>First Contact Resolution: Monitoring the percentage of issues resolved on the first interaction with the customer.</p>
+        </div>
+        <div class="help1">
+            <h1>Integration with Other Services</h1>
+            <p>Seamless Experience: Integration with booking systems, payment gateways, and rental management systems to provide a smooth and efficient customer support experience.</p>
+            <p>Data Analytics: Using data analytics to identify common issues, customer preferences, and areas for improvement.</p>
+        </div>
+    </div> -->
+
+
+
+
+
+
+background-image: radial-gradient(circle, #eee, rgb(31 56 112), #dee2e6);
+
+
+
+background-image: radial-gradient(circle, #eeeeeebd, rgb(212 148 244 / 83%), rgb(85 138 252 / 74%));
+
+
+
+#496676
+
+'Courier New',monospace
+
+
+color: #dee2e6;
+background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(172, 212, 231, 1) 0%, #496678 62%);
+
+
+background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(172, 212, 231, 1) 0%, #496678 62%);
+
+
+
+background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, #496678 0%, rgba(172, 212, 231, 1) 100%);
+
+
+
+color: #7bcbe6
+
+
+#1a3f54
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<?php
+session_start();
+
+// Check if the user is logged in and if session data is set
+if (!isset($_SESSION["user"]) || !is_array($_SESSION["user"])) {
+    header("Location: login.php");
+    exit();
+}
+
+// Fetch user ID from session
+$user_id = $_SESSION["user"]["id"];
+
+// Database connection
+require_once "db.php";
+
+// Prepare and execute the query to fetch customer data
+$sql = "SELECT * FROM customers WHERE id = ?";
+$stmt = mysqli_stmt_init($conn);
+if (!mysqli_stmt_prepare($stmt, $sql)) {
+    die("SQL error");
+}
+mysqli_stmt_bind_param($stmt, "i", $user_id);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
+$customer = mysqli_fetch_assoc($result);
+
+// Check if customer data was retrieved
+if (!$customer) {
+    die("Customer not found");
+}
+
+// Close the database connection
+mysqli_close($conn);
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <style>
+        /* body{
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            font-family: "Poppins", Arial, sans-serif;
+            background-image: radial-gradient(circle, rgb(212, 148, 210), rgb(110, 117, 228), rgb(185, 138, 252));
+        
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        } */
+
+        /* Common body styling */
+        body {
+            font-family: "Poppins", Arial, sans-serif;
+            background-color: #7bcbe6;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            /* background-image: radial-gradient(circle, rgb(212, 148, 244), rgb(110, 217, 228), rgb(85, 138, 252));
+             */
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            height: 100vh;
+            /* display: flex; */
+            justify-content: center;
+            align-items: center;
+        }
+
+        
+
+        /* Container for the booking form */
+        .form {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            position: relative;
+            margin-top: 70px;
+            margin-bottom: 100px;
+            margin-left: 500px;
+            /* background-image: radial-gradient(circle, #eeeeeebd, rgb(212 148 244 / 83%), rgb(85 138 252 / 74%));
+             */
+        }
+        /* Header Styles */
+        header {
+            background-color: #0c2635;
+            position: fixed;
+            width: 100%;
+            padding: 5px 0;
+            top: 0;
+            z-index: 1000; /* Ensure header stays on top */
+        }
+
+        /* Navigation Styles */
+        nav {
+            display: flex;
+            justify-content: space-between; /* Adjust to space out the three sections */
+            align-items: center; /* Center items vertically */
+            padding: 0 20px; /* Add padding to nav */
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center; /* Center items vertically */
+        }
+
+        .nav-center ul {
+            display: flex;
+            gap: 20px; /* Adjust gap between navbar items */
+        }
+
+        .nav-right ul {
+            display: flex;
+            gap: 20px; /* Adjust gap between buttons */
+        }
+
+        /* Adjust padding and margin for left, center, and right divs */
+        .nav-left,
+        .nav-center,
+        .nav-right {
+            padding: 10px 0; /* Add padding to the divs */
+        }
+
+        /* Navigation List Styles */
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 20px; /* Adjust gap between navbar items */
+        }
+
+        nav ul li {
+            display: inline;
+            font-family: "Poppins", Arial, sans-serif;
+            font-size: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            /* padding: 10px; */
+            margin: 10px;
+            padding-bottom: 0;
+        }
+
+        nav ul li a:hover {
+            border-bottom: 2px solid white;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #0c2635; /* Dark background color for the footer */
+            color: white; /* Light text color for better contrast */
+            text-align: center; /* Center align the text */
+            padding: 20px; /* Add padding inside the footer */
+            border-top: 1px solid #dee2e6; /* Add a subtle border at the top */
+        }
+
+        footer p {
+            margin: 0; /* Remove default margin for the paragraph */
+            font-size: 14px; /* Adjust font size if needed */
+            font-family: "Poppins", Arial, sans-serif;
+        }
+
+
+        /* Booking form elements */
+        .form label {
+            display: block;
+            margin-bottom: 8px;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .form button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .form button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="nav-left">
+                <ul>
+                    <li><a href="index.php#service">Home</a></li>
+                    <li><a href="catalog_car.php#home">Cars</a></li>
+                    <li><a href="payment.php">Payment</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <section id="booking" class="book">
+        <div class="form">
+            
+        <!-- SweetAlert for Successful Booking -->
+        <?php if (isset($_GET['success']) && $_GET['success'] == 1 && isset($_GET['booking_id'])): ?>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Booking Successful!',
+                        html: `Your Booking ID is: <?php echo htmlspecialchars($_GET['booking_id'], ENT_QUOTES); ?><br><br>Redirecting to payment page...`,
+                        timer: 5000, // Show alert for 5 seconds
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    }).then((result) => {
+                        if (result.dismiss === Swal.DismissReason.timer) {
+                            // Redirect to payment.php after 5 seconds
+                            window.location.href = `payment.php?booking_id=<?php echo htmlspecialchars($_GET['booking_id'], ENT_QUOTES); ?>&amount=<?php echo htmlspecialchars($_GET['price'], ENT_QUOTES); ?>`;
+                        }
+                    });
+                });
+            </script>
+        <?php endif; ?>
+
+
+
+            <form action="book_car.php" method="POST" enctype="multipart/form-data">
+                <label for="customer_id">Customer ID:</label>
+                <input type="text" id="customer_id" name="customer_id" value="<?php echo htmlspecialchars($customer['id'], ENT_QUOTES); ?>" required>
+
+                <label for="car_id">Car ID:</label>
+                <input type="text" id="car_id" name="car_id" value="<?php echo htmlspecialchars($_GET['car_id'] ?? '', ENT_QUOTES); ?>" required>
+
+                <label for="start_date">Start Date:</label>
+                <input type="date" id="start_date" name="start_date" required>
+
+                <label for="end_date">End Date:</label>
+                <input type="date" id="end_date" name="end_date" required>
+
+                <label for="total_price">Total Price:</label>
+                <input type="text" id="total_price" name="total_price" value="<?php echo htmlspecialchars($_GET['price'] ?? '', ENT_QUOTES); ?>" required readonly>
+
+                <!-- Hidden input field for daily price -->
+                <input type="hidden" id="daily_price" name="daily_price" value="<?php echo htmlspecialchars($_GET['price'] ?? '', ENT_QUOTES); ?>">
+
+                <button type="submit">Book Now</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <p><b style="font-size:20px;">© 'carve'</b>, 2024. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var today = new Date().toISOString().split('T')[0];
+            var startDateInput = document.getElementById('start_date');
+            var endDateInput = document.getElementById('end_date');
+            var totalPriceInput = document.getElementById('total_price');
+            var dailyPrice = parseFloat(document.getElementById('daily_price').value);
+
+            startDateInput.min = today;
+            endDateInput.min = today;
+
+            function calculateTotalPrice() {
+                var startDate = new Date(startDateInput.value);
+                var endDate = new Date(endDateInput.value);
+                var timeDiff = endDate - startDate;
+                var days = Math.ceil(timeDiff / (1000 * 3600 * 24)); // Convert milliseconds to days
+
+                if (days > 0) {
+                    totalPriceInput.value = (days * dailyPrice).toFixed(2); // Calculate total price and update input field
+                } else {
+                    totalPriceInput.value = '';
+                }
+            }
+
+            startDateInput.addEventListener('change', function() {
+                if (startDateInput.value < today) {
+                    startDateInput.value = today;
+                }
+                endDateInput.min = startDateInput.value;
+                calculateTotalPrice();
+            });
+
+            endDateInput.addEventListener('change', function() {
+                if (endDateInput.value < startDateInput.value) {
+                    endDateInput.value = startDateInput.value;
+                }
+                calculateTotalPrice();
+            });
+        });
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<?php
+include 'db.php';
+
+$booking_id = isset($_GET['booking_id']) ? intval($_GET['booking_id']) : 0;
+$total_price = isset($_GET['total_price']) ? floatval($_GET['total_price']) : 0.00;
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $payment_method = $_POST['payment_method'];
+    $amount = $_POST['amount'];
+
+    if ($amount == $total_price) {
+        $sql = "INSERT INTO payments (booking_id, payment_method, amount) VALUES ('$booking_id', '$payment_method', '$amount')";
+
+        if ($conn->query($sql) === TRUE) {
+            $payment_id = $conn->insert_id;
+            header("Location: payment.php?success=1&payment_id=$payment_id");
+            exit();
+        } else {
+            echo "Error: " . $sql . "<br>" . $conn->error;
+        }
+    } else {
+        echo "Error: Amount does not match the total price.";
+    }
+
+    $conn->close();
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Process Payment</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+        body {
+            font-family: "Poppins", Arial, sans-serif;
+            background-color: #7bcbe6;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            /* background-image: radial-gradient(circle, rgb(212, 148, 244), rgb(110, 217, 228), rgb(85, 138, 252));
+             */
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            /* height: 100vh; */
+            /* display: flex; */
+            justify-content: center;
+            align-items: center;
+        }
+
+        
+
+        /* Container for the booking form */
+        .form {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+            margin-top: 200px;
+            margin-bottom: 120px;
+            margin-left: 520px;
+            /* background-image: radial-gradient(circle, #eeeeeebd, rgb(212 148 244 / 83%), rgb(85 138 252 / 74%));
+             */
+        }
+        /* Header Styles */
+        header {
+            background-color: #0c2635;
+            position: fixed;
+            width: 100%;
+            padding: 5px 0;
+            top: 0;
+            z-index: 1000; /* Ensure header stays on top */
+        }
+
+        /* Navigation Styles */
+        nav {
+            display: flex;
+            justify-content: space-between; /* Adjust to space out the three sections */
+            align-items: center; /* Center items vertically */
+            padding: 0 20px; /* Add padding to nav */
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center; /* Center items vertically */
+        }
+
+        .nav-center ul {
+            display: flex;
+            gap: 20px; /* Adjust gap between navbar items */
+        }
+
+        .nav-right ul {
+            display: flex;
+            gap: 20px; /* Adjust gap between buttons */
+        }
+
+        /* Adjust padding and margin for left, center, and right divs */
+        .nav-left,
+        .nav-center,
+        .nav-right {
+            padding: 10px 0; /* Add padding to the divs */
+        }
+
+        /* Navigation List Styles */
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 20px; /* Adjust gap between navbar items */
+        }
+
+        nav ul li {
+            display: inline;
+            font-family: "Poppins", Arial, sans-serif;
+            font-size: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            /* padding: 10px; */
+            margin: 10px;
+            padding-bottom: 0;
+        }
+
+        nav ul li a:hover {
+            border-bottom: 2px solid white;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #0c2635; /* Dark background color for the footer */
+            color: white; /* Light text color for better contrast */
+            text-align: center; /* Center align the text */
+            padding: 20px; /* Add padding inside the footer */
+            border-top: 1px solid #dee2e6; /* Add a subtle border at the top */
+        }
+
+        footer p {
+            margin: 0; /* Remove default margin for the paragraph */
+            font-size: 14px; /* Adjust font size if needed */
+            font-family: "Poppins", Arial, sans-serif;
+        }
+
+
+        /* Booking form elements */
+        .form label {
+            display: block;
+            margin-bottom: 8px;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        /* .form select {
+            padding: 10px 149px;
+        } */
+        .form select {
+            padding: 5px 50px;
+        }
+
+        .form button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .form button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="nav-left">
+                <ul>
+                    <li><a href="index.php#service">Home</a></li>
+                    <li><a href="catalog_car.php#home">Car</a></li>
+                    <li><a href="payment_receipt.php">Payment Receipt</a></li>
+                </ul>
+            </div>
+            <div class="nav-center">
+            </div>
+            <div class="nav-right">
+            </div>
+        </nav>
+    </header>
+    
+    <div class="form">
+        <?php if (isset($_GET['success']) && $_GET['success'] == 1): ?>
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Payment Successful!',
+                        html: 'Your Payment ID is: <?php echo htmlspecialchars($_GET['payment_id'], ENT_QUOTES); ?><br><br>',
+                        showConfirmButton: true
+                    });
+                });
+            </script>
+        <?php endif; ?>
+
+        <form action="payment.php?booking_id=<?php echo $booking_id; ?>&total_price=<?php echo $total_price; ?>" method="POST">
+        
+            <label for="booking_id">Booking ID:</label>
+            <input type="text" id="booking_id" name="booking_id" value="<?php echo htmlspecialchars($booking_id); ?>" required readonly>
+            
+        
+            <label for="payment_method">Payment Method:</label>
+            <select id="payment_method" name="payment_method" required>
+                <option value="Select">Select</option>
+                <option value="Credit Card">Credit Card</option>
+                <option value="Debit Card">Debit Card</option>
+                <option value="PayPal">PayPal</option>
+                <option value="Bank Transfer">Bank Transfer</option>
+            </select>
+            <br>
+            <label for="amount">Amount:</label>
+            <input type="number" id="amount" name="amount" step="0.01" value="<?php echo $total_price; ?>" readonly required>
+            
+            <button type="submit">Proceed to Pay</button>
+        </form>
+    </div>
+
+    <footer>
+        <p><b style="font-size:20px;">© 'carve'</b>, 2024. All Rights Reserved.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+

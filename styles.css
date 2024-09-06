@@ -1,0 +1,678 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+    font-family:"Poppins", Arial, sans-serif;
+    background-color: #7bcbe6;
+    /* background-image: url(img/background.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed; */
+    /* background-color: rgb(203, 13, 203); */
+    /* background-image: radial-gradient(circle, rgb(206, 129, 245), rgb(112, 210, 221), rgb(206, 103, 211));
+             */
+}
+
+.logo-image{
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-top: -6px;
+}
+
+.hero-banner {
+    position: relative;
+    width: 100%;
+    /* height: 10%; */
+    max-width: 100vw;
+    overflow: hidden;
+    
+}
+.hero-banner img {
+    width: 100%;
+    height: 710px;
+}
+.hero-text {
+    text-align: center;
+    position: absolute;
+    /* top: 50%; */
+    bottom: 10px;
+    left: 50%;
+
+    /* left: 26%; */
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 2px;
+    padding-right: 2px;
+    transform: translate(-50%, -50%);
+    color: white;
+    /* background-color: rgb(0, 0, 0, 0.4); */
+    background-color: rgb(255, 255, 255, 0.001);
+    
+}
+
+
+
+
+
+
+
+/* Header Styles */
+header {
+    background-color: #0c2635;
+    /* color: white; */
+    /* padding: 10px 0;  */
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000; /* Ensure header stays on top */
+    /* background-color: rgb(255, 255, 255, 0.2); */
+    
+}
+
+
+/* Navigation Styles */
+nav {
+    display: flex;
+    justify-content: space-between; /* Adjust to space out the three sections */
+    align-items: center; /* Center items vertically */
+    padding: 0 20px; /* Add padding to nav */
+}
+
+.nav-left {
+    display: flex;
+    align-items: center; /* Center image vertically */
+}
+
+.nav-center ul {
+    display: flex;
+    gap: 20px; /* Adjust gap between navbar items */
+}
+
+.nav-right ul {
+    display: flex;
+    gap: 20px; /* Adjust gap between buttons */
+}
+
+/* Adjust padding and margin for left, center, and right divs */
+.nav-left,
+.nav-center,
+.nav-right {
+    padding: 10px 0; /* Add padding to the divs */
+    
+}
+
+
+/* Navigation Styles */
+/* nav {
+    display: flex;
+    justify-content: center; 
+} */
+
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 20px; /* Adjust gap between navbar items */
+}
+
+nav ul li {
+    display: inline;
+    font-family:"Poppins", Arial, sans-serif;
+    font-size: 20px;
+}
+
+nav ul li a {
+    /* color: rgb(255, 255, 255); */
+    color: white;
+    text-decoration: none;
+    /* padding: 10px 20px; */
+    /* padding: 10px; */
+    margin: 10px;
+    padding-bottom: 0;
+    /* padding-top: 10px;
+    padding-right: 10px; */
+    /* display: block;  */
+    /* Ensure proper spacing around links */
+    
+}
+
+nav ul li a:hover {
+    /* border-bottom: 2px solid rgb(255, 255, 255); */
+    border-bottom: 2px solid white;
+    
+
+}
+
+.profile {
+    /* margin-bottom: 30px; */
+    margin-right: 50px;
+    text-align: center;
+}
+
+.profile img {
+    display: block;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin: 0 auto;
+    margin-top: 5px;
+}
+
+.profile h3 {
+    /* color: #ffffff; */
+    margin: 10px 0 5px;
+    font-size: 20px;
+}
+
+.profile p {
+    color: rgb(206, 240, 253);
+    font-size: 14px;
+}
+
+
+.about{
+    padding-top: 100px;
+    padding-bottom: 80px;
+    background-color: #7bcbe6;
+    /* background-image: url(img/about.jpg); */
+    margin: 2px auto;
+    /* background-image: radial-gradient(circle, rgb(212, 148, 244), rgb(110, 217, 228), rgb(85, 138, 252));
+             */
+}
+
+.about-section {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Space between image and text */
+    padding: 20px; /* Padding around the section */
+    /* background-color: greenyellow; */
+    
+    
+}
+
+.about-image {
+    flex: 1;
+    max-width: 40%;
+    /* background-color: greenyellow; */
+}
+
+/* .about-image:hover{
+    transform: scale(1.01);
+} */
+
+.about-image img {
+    margin-left: 40px;
+    max-width: 110%;
+    height: auto;
+    border-radius: 8px; /* Optional: Add rounded corners to the image */
+}
+
+.about-text {
+    flex: 2;
+    max-width: 60%;
+    /* font-family: serif; */
+    /* background-color: white; */
+    background-color: rgb(255, 255, 255, 0.001);
+    border-radius: 8px;
+    /* margin-left: 20px; */
+}
+
+/* .about-text:hover{
+    transform: scale(1.01);
+} */
+.about-text h1 {
+    text-align: center;
+    font-family:"Poppins", Arial, sans-serif;
+}
+
+.about-text p {
+    font-family:"Poppins", Arial, sans-serif;
+    font-size: 18px;
+    font-weight:500;
+    line-height: 1.5;
+    text-align: justify;
+    max-width: 87%;
+    margin-left: 50px;
+    /* padding-left: 20px; */
+}
+
+.car-catalog {
+    display: flex;
+    flex-wrap: wrap;
+    /* justify-content: space-around; */
+    padding: 20px;
+    margin-left: 40px;
+    /* background-color: white; */
+}
+
+.car-catalog div {
+    border: 1px solid #ccc;
+    margin: 10px;
+    padding: 10px;
+    width: 30%;
+    background-color: white;
+    border-radius: 10px;
+    
+}
+
+.car-catalog div:hover {
+    transform: scale(1.01);
+    
+}
+
+.car-catalog h2 {
+    text-align: center;
+}
+
+.car-catalog p {
+    text-align: center;
+    
+}
+
+.button-container {
+    margin-left: 50px;
+}
+
+
+
+.car-catalog a.btn {
+    display: inline-block; /* Make the anchor behave like a block for margin */
+    margin: 10px auto; /* Center the button */
+    padding: 10px 20px;
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-left: 120px;
+}
+
+.car-catalog a.btn:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
+
+
+.car{
+    padding: 100px;
+    background-image: url(img/background.jpg) ;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    /* background-image: linear-gradient(purple,red, yellow, green, rgb(242, 111, 36)); */
+}
+
+.book{
+    padding-top: 130px;
+    /* background-color: lightgreen; */
+    /* background-image: url(img/reg1.jpg); */
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    padding-bottom: 20px;
+    
+    
+}
+
+
+
+
+.conta{
+    padding-top: 100px;
+    padding-bottom: 100px;
+    background-color: lightblue;
+    text-align: center;
+    background-image: url(img/cont2.jpg);
+    font-family: "Poppins", Arial, sans-serif;
+}
+
+
+#contact form {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    max-width: 600px;
+    margin: auto;
+}
+
+.conta h2{
+    margin-right: 500px;
+}
+
+#contact form label {
+    margin-top: 10px;
+}
+
+#contact form input, #contact form textarea {
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+}
+
+#contact form button {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #0d6efd;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+} 
+
+#booking form {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    max-width: 600px;
+    margin: auto;
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 20px;
+}
+
+#booking form label {
+    margin-top: 10px;
+}
+
+#booking form input, #booking form select {
+    padding: 10px;
+    margin-top: 5px;
+}
+
+#booking form button {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #0d6efd;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+
+#registation form {
+    display: flex;
+    flex-direction: column;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    /* padding-bottom: 30px; */
+    max-width: 600px;
+    margin: auto;
+    background-color: rgba(255, 255, 255);
+    /* box-shadow: 0 0 10px rgba(255, 255, 255, 0.9); */
+    border-radius: 8px;
+}
+
+#registation form label {
+    margin-top: 10px;
+}
+
+#registation form input, #booking form select {
+    padding: 10px;
+    margin-top: 5px;
+}
+
+#registation form button {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #0d6efd;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.reg{
+    padding-top: 110px;
+    /* background-color: lightblue;
+    background-image: url(img/reg.jpg); */
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    padding-bottom: 50px;
+    
+}
+
+
+
+.form{
+    text-align: left;
+    font-weight: bold ;
+    font-family: "Poppins", Arial, sans-serif;
+}
+
+
+
+
+
+
+
+.servic {
+    text-align: center;
+    align-items: center;
+    max-width: 100%;
+    margin: 2px auto;
+    padding-top: 90px;
+    background-color: #7bcbe6;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    /* background-image: radial-gradient(circle, rgb(212, 148, 244), rgb(110, 217, 228), rgb(85, 138, 252));
+             */
+}
+
+.servic h2 {
+    color: black;
+    font-family: "Poppins", Arial, sans-serif;
+    margin-bottom: 0; /* Add some space below the heading */
+}
+
+.container {
+    text-align: center;
+    max-width: 100%;
+    margin: 2px auto;
+    padding: 20px; /* Adjust padding for better spacing */
+    font-family: "Poppins", Arial, sans-serif;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Add space between cards */
+    justify-content: center; /* Center align cards horizontally */
+}
+
+.card {
+    width: 24rem;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden; /* Ensure rounded corners are applied to images */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Enhance card shadow */
+    transition: box-shadow 0.3s ease, transform 0.3s ease; /* Smooth hover effect */
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
+    transform: translateY(-5px); /* Slight lift on hover */
+}
+
+.card img {
+    width: 100%;
+    height: auto; /* Ensure image maintains aspect ratio */
+    border-bottom: 2px solid #ddd; /* Add a border between image and text */
+}
+
+.card-body {
+    padding: 20px; /* Add padding inside the card body */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.card-body h5 {
+    font-weight: 700;
+    margin-bottom: 10px; /* Add space below title */
+}
+
+.card-body p {
+    text-align: justify;
+    margin-bottom: 10px; /* Add space below text */
+}
+
+.card-body .btn {
+    margin-top: 10px; /* Adjust as needed for spacing */
+    padding: 10px 20px; /* Enhance button padding */
+    border-radius: 5px; /* Slightly rounded button corners */
+    transition: background-color 0.3s ease; /* Smooth button hover effect */
+}
+
+.card-body .btn:hover {
+    background-color: #0056b3; /* Darker button color on hover */
+}
+
+
+
+
+
+
+
+.pay{
+    padding: 20px;
+    max-width: 600px;
+    margin: 50px auto;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    
+}
+
+#payment{
+    background-image: url(img/reg3.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    padding: 40px;
+}
+
+#payment form {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    max-width: 600px;
+    margin: auto;
+    background-color: white;
+    border-radius: 15px;
+}
+
+#payment form label {
+    margin-top: 10px;
+}
+
+
+#payment select{
+    height: 40px;
+}
+
+#payment form input, #booking form select {
+    padding: 10px;
+    margin-top: 5px;
+}
+
+#payment form button {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #0d6efd;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.pay{
+    margin-top: 180px;
+    background-color: white;
+}
+
+
+
+footer {
+    background-color: #0c2635; /* Light background color for the footer */
+    color:  white; /* Dark text color for better contrast */
+    text-align: center; /* Center align the text */
+    padding: 20px; /* Add padding inside the footer */
+    border-top: 1px solid #dee2e6; /* Add a subtle border at the top */
+
+}
+
+footer p {
+    margin: 0; /* Remove default margin for the paragraph */
+    font-size: 14px; /* Adjust font size if needed */
+    font-family: "Poppins", Arial, sans-serif;
+}
+
+
+.fa {
+    padding: 20px;
+    font-size: 30px;
+    width: 60px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 50%;
+}
+
+.fa:hover {
+    opacity: 0.7;
+}
+
+.fa-facebook {
+  background: #3B5998;
+  color: white;
+}
+
+.fa-twitter {
+  background: #55ACEE;
+  color: white;
+}
+
+
+.fa-linkedin {
+  background: #007bb5;
+  color: white;
+}
+
+.fa-youtube {
+  background: #bb0000;
+  color: white;
+}
+
+.fa-instagram {
+  background: #125688;
+  color: white;
+}
+
+
+.car-cat{
+    max-width: 50%;
+}
+
+
+.address {
+  float: left;
+  width: 20%;
+}
+
+.contact_info{
+    float: left;
+    width: 20%;
+}
+
+.follow {
+    float: left;
+    width: 25%;
+}
+
+.map {
+    float: left;
+    width: 35%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.row{
+    font-family: "Poppins", Arial, sans-serif;
+}

@@ -1,0 +1,221 @@
+body {
+    margin: 0;
+    font-family: "Poppins", Arial, sans-serif;
+    background-color: #7bcbe6;
+}
+
+/* header {
+    background-color: #007bff;
+    color: white;
+    padding: 1px 0;
+    text-align: center;
+} */
+
+
+
+/* Header Styles */
+header {
+    background-color: #0c2635;
+    /* color: white; */
+    padding: 10px 0; 
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000; /* Ensure header stays on top */
+    /* background-color: rgb(255, 255, 255, 0.2); */
+    
+}
+
+
+/* Navigation Styles */
+nav {
+    display: flex;
+    justify-content: space-between; /* Adjust to space out the three sections */
+    align-items: center; /* Center items vertically */
+    padding: 0 20px; /* Add padding to nav */
+}
+
+.nav-left {
+    display: flex;
+    align-items: center; /* Center image vertically */
+    
+}
+
+.nav-center ul {
+    display: flex;
+    gap: 20px; /* Adjust gap between navbar items */
+}
+
+.nav-right ul {
+    display: flex;
+    gap: 20px; /* Adjust gap between buttons */
+}
+
+/* Adjust padding and margin for left, center, and right divs */
+.nav-left,
+.nav-center,
+.nav-right {
+    padding: 10px 0; /* Add padding to the divs */
+    
+}
+
+
+/* Navigation Styles */
+/* nav {
+    display: flex;
+    justify-content: center; 
+} */
+
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 20px; /* Adjust gap between navbar items */
+}
+
+nav ul li {
+    display: inline;
+    font-family:"Poppins", Arial, sans-serif;
+    font-size: 20px;
+}
+
+nav ul li a {
+    /* color: rgb(255, 255, 255); */
+    color: white;
+    text-decoration: none;
+    /* padding: 10px 20px; */
+    
+    margin: 10px;
+    padding-bottom: 0;
+    /* padding-bottom: 10px;
+    padding-top: 10px;
+    padding-right: 10px; */
+    /* display: block;  */
+    /* Ensure proper spacing around links */
+    
+}
+
+nav ul li a:hover {
+    /* border-bottom: 2px solid rgb(255, 255, 255); */
+    border-bottom: 2px solid white;
+    
+
+}
+
+
+
+
+#controls {
+    margin-top: 80px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* gap: 10px; */
+    z-index: 1;
+    overflow: hidden;
+}
+
+#bg-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: -1;
+    /* opacity: 0.5; */
+}
+
+#map-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 75vh;
+    width: 90%;
+    position: relative;
+}
+
+#map {
+    height: 90%;
+    width: 90%;
+}
+
+#search-container, #route-search-container {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin: 10px 0;
+    z-index: 2;
+}
+
+#search, #start-location, #end-location {
+    padding: 10px;
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border-color 0.3s ease;
+}
+
+#search:hover, #start-location:hover, #end-location:hover {
+    border-color: #002fff;
+}
+
+#search-button, #route-button {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+#search-button:hover, #route-button:hover {
+    background-color: #ff0000;
+}
+
+#banner-section {
+    margin-top: 20px;
+}
+
+#banner {
+    background-color: #e9ecef;
+    text-align: center;
+    padding: 20px;
+    margin-top: 10px;
+}
+
+#banner h2 {
+    margin: 0 0 10px 0;
+}
+
+#banner p {
+    margin: 0;
+}
+
+/* footer {
+    background-color: #7bf43a;
+    text-align: center;
+    padding: 10px 0;
+    position: relative;
+    width: 100%;
+} */
+
+
+
+footer {
+    background-color: #0c2635; /* Light background color for the footer */
+    color:  white; /* Dark text color for better contrast */
+    text-align: center; /* Center align the text */
+    padding: 20px; /* Add padding inside the footer */
+    border-top: 1px solid #dee2e6; /* Add a subtle border at the top */
+
+}
+
+footer p {
+    margin: 0; /* Remove default margin for the paragraph */
+    font-size: 14px; /* Adjust font size if needed */
+    font-family: "Poppins", Arial, sans-serif;
+}

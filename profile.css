@@ -1,0 +1,163 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
+
+* {
+    list-style: none;
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", Arial, sans-serif;
+}
+
+body {
+    background: rgb(2, 0, 36);
+    background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgb(130, 155, 239) 0%,  rgba(172, 212, 231, 1) 62%);
+}
+
+.wrapper .sidebar {
+    background-color: #333;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 100%;
+    padding: 20px 0;
+    transition: all 0.5s ease;
+}
+
+.wrapper .sidebar .profile {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.wrapper .sidebar .profile img {
+    display: block;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: 0 auto;
+}
+
+.wrapper .sidebar .profile h3 {
+    color: #ffffff;
+    margin: 10px 0 5px;
+}
+
+.wrapper .sidebar .profile p {
+    color: rgb(206, 240, 253);
+    font-size: 14px;
+}
+
+.wrapper .sidebar ul li a {
+    display: block;
+    padding: 13px 30px;
+    color: rgb(241, 237, 237);
+    font-size: 16px;
+    position: relative;
+}
+
+.wrapper .sidebar ul li a .icon {
+    color: #dee4ec;
+    width: 30px;
+    display: inline-block;
+}
+
+.wrapper .sidebar ul li a:hover,
+.wrapper .sidebar ul li a.active {
+    color: #0c7db1;
+    background: white;
+    border-right: 2px solid rgb(5, 68, 104);
+}
+
+.wrapper .sidebar ul li a:hover .icon,
+.wrapper .sidebar ul li a.active .icon {
+    color: #0c7db1;
+}
+
+.wrapper .main_content {
+    margin-left: 20%;
+}
+
+table {
+    width: 80%;
+    border: 1px solid black;
+    margin-top: 10%;
+    margin-bottom: 10%;
+    text-align: center;
+}
+
+td,
+th {
+    padding: 10px;
+    border: 1px solid black;
+    text-align: center;
+}
+
+.user-profile-style {
+    padding-top: 120px;
+    padding-bottom: 10px;
+    font-weight: bold;
+    font-size: 35px;
+}
+
+/* Mobile Phones */
+@media only screen and (max-width: 600px) {
+    .wrapper .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+    .wrapper .sidebar ul li a {
+        text-align: center;
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .wrapper .main_content {
+        margin-left: 0;
+        padding: 20px;
+    }
+
+    .wrapper .sidebar .profile img {
+        width: 80px;
+        height: 80px;
+    }
+
+    .user-profile-style {
+        font-size: 24px;
+        text-align: center;
+    }
+
+    table {
+        width: 100%;
+        font-size: 14px;
+    }
+}
+
+/* Tablets */
+@media only screen and (min-width: 600px) and (max-width: 768px) {
+    .wrapper .sidebar {
+        width: 50%;
+        height: auto;
+    }
+
+    .wrapper .main_content {
+        margin-left: 50%;
+        padding: 20px;
+    }
+
+    .wrapper .sidebar ul li a {
+        font-size: 16px;
+    }
+
+    .user-profile-style {
+        font-size: 28px;
+        text-align: center;
+    }
+
+    table {
+        width: 100%;
+        font-size: 16px;
+    }
+}
